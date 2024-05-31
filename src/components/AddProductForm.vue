@@ -93,4 +93,15 @@ fieldset input,
 fieldset textarea {
   padding: 0.5rem;
 }
+
+fieldset input[type="submit"] {
+  width: 100%;
+  background-color: black;
+  color: white;
+  border-radius: 2rem;
+}
+
+fieldset input[type="submit"]:disabled {
+  background-color: grey;
+}
 </style>

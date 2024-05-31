@@ -15,7 +15,7 @@ button {
   appearance: none;
   border: 0;
   outline: 0;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   cursor: pointer;
   font-weight: 600;
   border-radius: 2rem;

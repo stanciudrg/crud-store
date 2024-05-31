@@ -89,12 +89,40 @@ li {
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  background-color: black;
-  color: white;
+  color: black;
+  box-shadow: 0px 0px 50px 0px rgba(29, 29, 31, 0.1);
+  border-radius: 2rem;
+  justify-content: space-between;
+}
+
+li div {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-control input,
+.form-control textarea {
+  padding: 0.5rem;
 }
 
 .product-controls {
   display: flex;
   gap: 1rem;
+}
+
+.product-controls button {
+  width: 100%;
+  background-color: black;
+  color: white;
 }
 </style>
