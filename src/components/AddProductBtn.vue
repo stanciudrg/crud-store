@@ -6,4 +6,12 @@ import Button from "./Button.vue";
   <Button @click="$emit('toggle-add-product')" name="Add product" />
 </template>
 
-<style scoped></style>
+<style scoped>
+button {
+  max-width: 300px;
+  width: 100%;
+  align-self: center;
+  background-color: transparent;
+  border: 2px solid black;
+}
+</style>

@@ -14,11 +14,34 @@ productsStore.$subscribe((mutation, state) => {
 
 function toggleAddProduct() {
   isAddProductFormVisible.value = !isAddProductFormVisible.value;
+  if (isAddProductFormVisible.value)
+    window.addEventListener(
+      "keyup",
+      (e) => {
+        if (e.key == "Escape") isAddProductFormVisible.value = false;
+      },
+      { once: true }
+    );
 }
 </script>
 
 <template>
-  <AddProductBtn @toggle-add-product="toggleAddProduct" />
-  <AddProductForm v-show="isAddProductFormVisible" />
-  <Products :products="productsStore.products" />
+  <div class="products-view">
+    <AddProductBtn @toggle-add-product="toggleAddProduct" />
+    <AddProductForm
+      @product-added="toggleAddProduct"
+      v-show="isAddProductFormVisible"
+    />
+    <Products :products="productsStore.products" />
+  </div>
 </template>
+
+<style scoped>
+.products-view {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  max-width: 1300px;
+  width: 100%;
+}
+</style>

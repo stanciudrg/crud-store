@@ -5,11 +5,6 @@ import { RouterLink } from "vue-router";
 <template>
   <header>
     <h1>CRUD store</h1>
-    <nav>
-      <ul>
-        <li><RouterLink to="/">Products</RouterLink></li>
-      </ul>
-    </nav>
   </header>
 </template>
 
@@ -17,7 +12,15 @@ import { RouterLink } from "vue-router";
 header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+h1 {
+  padding: 0;
+  margin: 0;
+  font-weight: 600;
 }
 
 ul {
@@ -30,7 +33,7 @@ ul {
 a {
   text-decoration: none;
   color: black;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 </style>

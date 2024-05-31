@@ -2,7 +2,6 @@
 defineProps({
   name: String,
 });
-defineEmits([""]);
 </script>
 
 <template>
@@ -18,5 +17,7 @@ button {
   outline: 0;
   padding: 1rem 2rem;
   cursor: pointer;
+  font-weight: 600;
+  border-radius: 2rem;
 }
 </style>
