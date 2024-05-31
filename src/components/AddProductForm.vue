@@ -8,17 +8,17 @@ defineProps({
 });
 defineEmits(["product-added"]);
 
-const name = defineModel("name");
-const description = defineModel("description");
-const price = defineModel("price");
+let name = defineModel("name");
+let description = defineModel("description");
+let price = defineModel("price");
 
 const productsStore = useProducts();
 
 function addProduct() {
-  productsStore.addProduct(this.name, this.description, this.price || 0);
-  this.name = "";
-  this.description = "";
-  this.price = "";
+  productsStore.addProduct(name, description, price || 0);
+  name = "";
+  description = "";
+  price = "";
 }
 </script>
 
