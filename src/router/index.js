@@ -9,12 +9,6 @@ const router = createRouter({
       name: "products",
       component: ProductsView,
     },
-    {
-      path: "/cart",
-      name: "cart",
-      // lazy-loading the view
-      component: () => import("../views/CartView.vue"),
-    },
   ],
 });
 

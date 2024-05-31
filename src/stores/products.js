@@ -1,19 +1,27 @@
+import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
 export const useProducts = defineStore("products", () => {
-  const products = ref([]);
+  const products = ref(JSON.parse(localStorage.getItem("products") || "[]"));
   const sortMethod = ref("default");
-  const nextID = ref(0);
 
-  const sortBy = computed((value) => {
-    return products.sort((a, b) => a[value] - b[value]);
+  let nextID = ref(
+    products.value.length > 0
+      ? Math.max(...products.value.map((product) => product.id)) + 1
+      : 0
+  );
+
+  const sortBy = computed(() => {
+    return this.products.sort(
+      (a, b) => a[this.sortMethod] - b[this.sortMethod]
+    );
   });
 
   const sortedProducts = computed(() => {
-    if (this.sortMethod === "default") {
+    if (sortMethod === "default") {
       return products;
     } else {
-      return this.sortBy(this.sortMethod);
+      return sortBy;
     }
   });
 
@@ -22,16 +30,16 @@ export const useProducts = defineStore("products", () => {
       name,
       description,
       price,
-      id: nextID++,
+      id: this.nextID++,
       isInCart: false,
     };
 
     this.products.push(productToAdd);
   }
 
-  function updateProduct(newProduct, values) {
+  function updateProduct(newProductID, values) {
     const productToUpdate = this.products.find(
-      (product) => (product.id = newProduct.id)
+      (product) => product.id === newProductID
     );
 
     if (!productToUpdate) return;
@@ -41,9 +49,9 @@ export const useProducts = defineStore("products", () => {
     }
   }
 
-  function deleteProduct(product) {
+  function deleteProduct(productID) {
     const productToDelete = this.products.find(
-      (item) => (item.id = product.id)
+      (product) => product.id === productID
     );
 
     if (!productToDelete) return;
@@ -51,4 +59,14 @@ export const useProducts = defineStore("products", () => {
     const index = this.products.indexOf(productToDelete);
     this.products.splice(index, 1);
   }
+
+  return {
+    products,
+    sortMethod,
+    nextID,
+    sortedProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+  };
 });

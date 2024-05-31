@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink } from "vue-router";
 </script>
 
 <template>
@@ -8,7 +8,6 @@ import { RouterLink, RouterView } from "vue-router";
     <nav>
       <ul>
         <li><RouterLink to="/">Products</RouterLink></li>
-        <li><RouterLink to="/cart">Cart</RouterLink></li>
       </ul>
     </nav>
   </header>
