@@ -1,45 +1,39 @@
 <script setup>
 import { useProducts } from "../stores/products";
-import { computed, ref } from "vue";
+import { computed, ref, reactive, defineEmits } from "vue";
 import EditProductBtn from "./EditProductBtn.vue";
 import DeleteProductBtn from "./DeleteProductBtn.vue";
 import ToggleEditBtn from "./ToggleEditBtn.vue";
 import CancelEditBtn from "./CancelEditBtn.vue";
 
-defineProps({
+const emit = defineEmits(["request-delete", "request-edit"]);
+
+const props = defineProps({
   product: Object,
 });
 
-let name = ref("");
-let description = ref("");
-let price = ref("");
-
-const productsStore = useProducts();
+const editModeProps = {};
 
 let editMode = ref(false);
 
-function toggleEditMode(product) {
+function updateEditModeProps() {
+  editModeProps.name = props.product.name;
+  editModeProps.description = props.product.description;
+  editModeProps.price = props.product.price;
+}
+
+function enableEditMode() {
+  updateEditModeProps();
   editMode.value = true;
-  name.value = product.name;
-  description.value = product.description;
-  price.value = product.price;
 }
 
-function deleteProduct(product) {
-  productsStore.deleteProduct(product.id);
-}
-
-function cancelEdit() {
+function disableEditMode() {
   editMode.value = false;
 }
 
-function editProduct(product) {
-  productsStore.updateProduct(product.id, {
-    name: name.value,
-    description: description.value,
-    price: price.value,
-  });
-  cancelEdit();
+function handleApplyEdit(product) {
+  emit("request-edit", product, editModeProps);
+  disableEditMode();
 }
 </script>
 
@@ -51,14 +45,14 @@ function editProduct(product) {
         type="text"
         name="text"
         placeholder="Product name"
-        v-model="name"
+        v-model="editModeProps.name"
       />
     </div>
     <div v-else class="name">{{ product.name }}</div>
     <div v-if="editMode" class="form-control">
       <label>Description</label>
       <textarea
-        v-model="description"
+        v-model="editModeProps.description"
         placeholder="Product description"
       ></textarea>
     </div>
@@ -67,18 +61,18 @@ function editProduct(product) {
       <label>Price</label>
       <input
         type="number"
-        v-model="price"
+        v-model="editModeProps.price"
         name="price"
         placeholder="Product price"
       />
     </div>
     <div v-else class="price">{{ product.price + " " + "$" }}</div>
     <div class="product-controls">
-      <CancelEditBtn v-if="editMode" @cancel-edit="cancelEdit" />
-      <DeleteProductBtn v-else @delete-product="deleteProduct(product)" />
+      <CancelEditBtn v-if="editMode" @click="disableEditMode" />
+      <DeleteProductBtn v-else @click="$emit('request-delete', product)" />
 
-      <EditProductBtn v-if="editMode" @edit-product="editProduct(product)" />
-      <ToggleEditBtn v-else @toggle-edit-product="toggleEditMode(product)" />
+      <EditProductBtn v-if="editMode" @click="handleApplyEdit(product)" />
+      <ToggleEditBtn v-else @click="enableEditMode" />
     </div>
   </li>
 </template>

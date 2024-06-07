@@ -1,14 +1,36 @@
 <script setup>
 import Product from "./Product.vue";
+import { useProducts } from "../stores/products";
 
 defineProps({
   products: Object,
 });
+
+const productsStore = useProducts();
+
+function deleteProduct(product) {
+  productsStore.deleteProduct(product.id);
+}
+
+function editProduct(product, newProps) {
+  console.log(product, newProps);
+  productsStore.updateProduct(product.id, {
+    name: newProps.name,
+    description: newProps.description,
+    price: newProps.price,
+  });
+}
 </script>
 
 <template>
   <ul>
-    <Product v-for="product in products" :key="product.id" :product="product" />
+    <Product
+      @request-delete="deleteProduct"
+      @request-edit="editProduct"
+      v-for="product in products"
+      :key="product.id"
+      :product="product"
+    />
   </ul>
 </template>
 

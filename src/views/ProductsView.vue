@@ -3,34 +3,50 @@ import { useProducts } from "../stores/products";
 import AddProductBtn from "../components/AddProductBtn.vue";
 import AddProductForm from "../components/AddProductForm.vue";
 import Products from "../components/Products.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
-let isAddProductFormVisible = ref(false);
 const productsStore = useProducts();
 
 productsStore.$subscribe((mutation, state) => {
   localStorage.setItem("products", JSON.stringify(state.products));
 });
 
-function toggleAddProduct() {
-  isAddProductFormVisible.value = !isAddProductFormVisible.value;
-  if (isAddProductFormVisible.value)
-    window.addEventListener(
-      "keyup",
-      (e) => {
-        if (e.key == "Escape") isAddProductFormVisible.value = false;
-      },
-      { once: true }
-    );
+let isFormVisible = ref(false);
+
+function addProduct(product) {
+  hideForm();
+
+  productsStore.addProduct(
+    product.name,
+    product.description,
+    product.price || 0
+  );
+}
+
+function showForm() {
+  isFormVisible.value = true;
+
+  window.addEventListener(
+    "keyup",
+    (e) => {
+      if (e.key == "Escape") hideForm();
+    },
+    { once: true }
+  );
+}
+
+function hideForm() {
+  isFormVisible.value = false;
 }
 </script>
 
 <template>
   <div class="products-view">
-    <AddProductBtn @toggle-add-product="toggleAddProduct" />
+    <AddProductBtn @click="showForm" />
     <AddProductForm
-      @product-added="toggleAddProduct"
-      v-show="isAddProductFormVisible"
+      @clicked-outside="hideForm"
+      @form-submit="addProduct"
+      v-if="isFormVisible"
     />
     <Products :products="productsStore.products" />
   </div>

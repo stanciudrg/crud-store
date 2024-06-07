@@ -1,31 +1,15 @@
 <script setup>
-import { useProducts } from "../stores/products";
-
-defineProps({
-  name: String,
-  description: String,
-  price: Number,
-});
-defineEmits(["product-added"]);
+defineEmits(["clicked-outside", "form-submit"]);
 
 let name = defineModel("name");
 let description = defineModel("description");
 let price = defineModel("price");
-
-const productsStore = useProducts();
-
-function addProduct() {
-  productsStore.addProduct(name, description, price || 0);
-  name = "";
-  description = "";
-  price = "";
-}
 </script>
 
 <template>
   <form
-    @click.self="$emit('product-added')"
-    @submit.prevent="() => addProduct()"
+    @mousedown.self="$emit('clicked-outside')"
+    @submit.prevent
     class="add-product"
   >
     <fieldset>
@@ -47,12 +31,12 @@ function addProduct() {
           name="price"
         />
       </div>
-      <input
-        type="submit"
-        @click="$emit('product-added')"
-        value="Add product"
+      <button
+        @click.prevent="$emit('form-submit', { name, description, price })"
         :disabled="!name"
-      />
+      >
+        Add product
+      </button>
     </fieldset>
   </form>
 </template>
