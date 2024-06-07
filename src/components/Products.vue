@@ -13,7 +13,6 @@ function deleteProduct(product) {
 }
 
 function editProduct(product, newProps) {
-  console.log(product, newProps);
   productsStore.updateProduct(product.id, {
     name: newProps.name,
     description: newProps.description,
