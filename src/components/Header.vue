@@ -4,7 +4,15 @@ import { RouterLink } from "vue-router";
 
 <template>
   <header>
-    <h1>CRUD store</h1>
+    <h1>CRUD Store</h1>
+    <nav>
+      <ul>
+        <li>
+          <RouterLink to="/">Products</RouterLink>
+          <RouterLink to="/cart">Cart</RouterLink>
+        </li>
+      </ul>
+    </nav>
   </header>
 </template>
 
