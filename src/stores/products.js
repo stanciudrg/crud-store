@@ -22,15 +22,15 @@ export const useProducts = defineStore("products", () => {
     }
   });
 
-  function changeSortMethod(newMethod) {
-    sortMethod.value = newMethod;
-  }
-
   const nextID = ref(
     products.value.length > 0
       ? Math.max(...products.value.map((product) => product.id)) + 1
       : 0
   );
+
+  function changeSortMethod(newMethod) {
+    sortMethod.value = newMethod;
+  }
 
   function addProduct(name, description, price) {
     const productToAdd = {
@@ -38,20 +38,19 @@ export const useProducts = defineStore("products", () => {
       description,
       price,
       id: nextID.value++,
-      isInCart: false,
     };
 
     products.value.push(productToAdd);
   }
 
-  function updateProduct(newProductID, values) {
+  function updateProduct(productID, newValues) {
     const productToUpdate = products.value.find(
-      (product) => product.id === newProductID
+      (product) => product.id === productID
     );
 
     if (!productToUpdate) return;
 
-    for (const [key, newValue] of Object.entries(values)) {
+    for (const [key, newValue] of Object.entries(newValues)) {
       if (productToUpdate.hasOwnProperty(key)) productToUpdate[key] = newValue;
     }
   }

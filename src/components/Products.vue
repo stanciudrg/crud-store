@@ -2,6 +2,7 @@
 import Product from "./Product.vue";
 import Button from "./Button.vue";
 import { useProducts } from "../stores/products";
+import { useCart } from "../stores/cart";
 import { ref } from "vue";
 
 defineProps({
@@ -27,12 +28,17 @@ function toggleSortMethodsList() {
 }
 
 function handleSortMethodsEvents(e) {
+  if (!e.target.classList.contains("sort-by-button")) return;
   productsStore.changeSortMethod(e.target.classList[1]);
   toggleSortMethodsList();
 }
 
 function deleteProduct(product) {
   productsStore.deleteProduct(product.id);
+
+  const cart = useCart();
+  const cartProduct = cart.findCartProduct(product.id);
+  if (cartProduct) cart.removeCartProduct(cartProduct);
 }
 
 function editProduct(product, newProps) {
@@ -41,6 +47,21 @@ function editProduct(product, newProps) {
     description: newProps.description,
     price: newProps.price,
   });
+
+  const cart = useCart();
+  const cartProduct = cart.findCartProduct(product.id);
+
+  if (cartProduct)
+    cart.updateCartProduct(cartProduct, {
+      name: newProps.name,
+      description: newProps.description,
+      price: newProps.price,
+    });
+}
+
+function addToCart(product) {
+  const cart = useCart();
+  cart.addToCart(product);
 }
 </script>
 
@@ -90,6 +111,7 @@ function editProduct(product, newProps) {
   </div>
   <ul class="products">
     <Product
+      @request-add-to-cart="addToCart"
       @request-delete="deleteProduct"
       @request-edit="editProduct"
       v-for="product in products"
@@ -113,6 +135,7 @@ function editProduct(product, newProps) {
   background-color: transparent;
   padding: 0.5rem 0.25rem;
   border-radius: 0.25rem;
+  text-decoration: underline;
 }
 
 .sort-by > button:hover,
@@ -121,6 +144,7 @@ function editProduct(product, newProps) {
 }
 
 .sort-by ul {
+  z-index: 1;
   position: absolute;
   top: 40px;
   right: 0;
@@ -130,7 +154,7 @@ function editProduct(product, newProps) {
   flex-direction: column;
   background-color: rgb(250, 250, 250);
   border-radius: 0.25rem;
-  box-shadow: 0 5px 10px 0 rgba(29, 29, 31, 0.04);
+  box-shadow: 0 20px 30px 0 rgba(29, 29, 31, 0.1);
   border: 1px solid rgba(29, 29, 31, 0.2);
 }
 

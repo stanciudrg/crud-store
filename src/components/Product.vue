@@ -1,12 +1,17 @@
 <script setup>
 import { useProducts } from "../stores/products";
 import { computed, ref, reactive, defineEmits } from "vue";
+import AddToCartBtn from "./AddToCartBtn.vue";
 import EditProductBtn from "./EditProductBtn.vue";
 import DeleteProductBtn from "./DeleteProductBtn.vue";
 import ToggleEditBtn from "./ToggleEditBtn.vue";
 import CancelEditBtn from "./CancelEditBtn.vue";
 
-const emit = defineEmits(["request-delete", "request-edit"]);
+const emit = defineEmits([
+  "request-add-to-cart",
+  "request-delete",
+  "request-edit",
+]);
 
 const props = defineProps({
   product: Object,
@@ -41,6 +46,10 @@ function handleApplyEdit(product) {
   emit("request-edit", product, editModeProps);
   disableEditMode();
 }
+
+function test() {
+  console.log(props.product);
+}
 </script>
 
 <template>
@@ -69,11 +78,20 @@ function handleApplyEdit(product) {
         v-model.trim="editModeProps.price"
         name="price"
         placeholder="Product price ($)"
+        maxlength="10"
+        max="1000000"
+        min="0"
       />
     </div>
     <div v-else class="price">
       {{ product.price ? product.price + " " + "$" : "Free" }}
     </div>
+    <AddToCartBtn
+      @click="$emit('request-add-to-cart', product)"
+      v-if="!editMode"
+      class="add-to-cart"
+      name="Add to cart"
+    />
     <div class="product-controls">
       <CancelEditBtn v-if="editMode" @click="disableEditMode" />
       <DeleteProductBtn v-else @click="$emit('request-delete', product)" />
@@ -98,6 +116,7 @@ li {
   overflow: hidden;
   box-shadow: 0 5px 10px 0 rgba(29, 29, 31, 0.04);
   border: 1px solid rgba(29, 29, 31, 0.2);
+  position: relative;
 }
 
 li div {
@@ -131,6 +150,7 @@ li div {
   margin-top: auto;
   margin-bottom: 1.5rem;
   -webkit-line-clamp: 1;
+  max-width: 230px;
 }
 
 .name-input,
@@ -203,6 +223,18 @@ textarea::-webkit-scrollbar-thumb:hover {
 .product-controls {
   display: flex;
   gap: 2px;
+}
+
+.add-to-cart {
+  position: absolute;
+  bottom: 70px;
+  right: 16px;
+  font-size: 14px;
+  padding: 0.5rem 1rem;
+}
+
+.add-to-cart:hover {
+  background-color: rgb(230, 230, 230);
 }
 
 .product-controls button {

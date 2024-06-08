@@ -48,7 +48,7 @@ a {
   text-decoration: none;
   color: rgb(130, 130, 130);
   font-size: 1.3rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 a.active {

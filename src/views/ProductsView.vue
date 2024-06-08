@@ -7,11 +7,6 @@ import { ref, watch } from "vue";
 
 const productsStore = useProducts();
 
-productsStore.$subscribe((mutation, state) => {
-  localStorage.setItem("sortMethod", JSON.stringify(state.sortMethod));
-  localStorage.setItem("products", JSON.stringify(state.products));
-});
-
 let isFormVisible = ref(false);
 
 function addProduct(product) {
