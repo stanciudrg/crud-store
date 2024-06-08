@@ -1,5 +1,7 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
+
+const location = useRoute();
 </script>
 
 <template>
@@ -8,8 +10,10 @@ import { RouterLink } from "vue-router";
     <nav>
       <ul>
         <li>
-          <RouterLink to="/">Products</RouterLink>
-          <RouterLink to="/cart">Cart</RouterLink>
+          <RouterLink to="/" activeClass="active">Products</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/cart" activeClass="active">Cart</RouterLink>
         </li>
       </ul>
     </nav>
@@ -20,9 +24,11 @@ import { RouterLink } from "vue-router";
 header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   margin: 0 auto;
   padding: 1rem 2rem;
+  color: rgb(25, 25, 25);
 }
 
 h1 {
@@ -40,8 +46,12 @@ ul {
 
 a {
   text-decoration: none;
-  color: black;
+  color: rgb(130, 130, 130);
   font-size: 1.3rem;
   font-weight: 500;
+}
+
+a.active {
+  color: inherit;
 }
 </style>

@@ -8,6 +8,7 @@ import { ref, watch } from "vue";
 const productsStore = useProducts();
 
 productsStore.$subscribe((mutation, state) => {
+  localStorage.setItem("sortMethod", JSON.stringify(state.sortMethod));
   localStorage.setItem("products", JSON.stringify(state.products));
 });
 
@@ -48,16 +49,18 @@ function hideForm() {
       @form-submit="addProduct"
       v-if="isFormVisible"
     />
-    <Products :products="productsStore.products" />
+    <Products :products="productsStore.sortedProducts" />
   </div>
 </template>
 
 <style scoped>
 .products-view {
+  max-width: 1300px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 0 2rem;
-  max-width: 1300px;
-  width: 100%;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
 }
 </style>

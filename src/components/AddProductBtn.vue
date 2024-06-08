@@ -3,15 +3,25 @@ import Button from "./Button.vue";
 </script>
 
 <template>
-  <Button name="Add product" />
+  <Button name="+" />
 </template>
 
 <style scoped>
 button {
-  max-width: 300px;
-  width: 100%;
   align-self: center;
-  background-color: transparent;
-  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75px;
+  height: 75px;
+  font-size: 2rem;
+  background-color: rgb(25, 25, 25);
+  color: rgb(250, 250, 250);
+  padding: 2rem;
+  border-radius: 100%;
+}
+
+button:hover {
+  background-color: rgb(45, 45, 45);
 }
 </style>
