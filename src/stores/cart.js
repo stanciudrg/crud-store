@@ -2,7 +2,14 @@ import { ref, watch, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
 export const useCart = defineStore("cart", () => {
-  const cartProducts = ref(JSON.parse(localStorage.getItem("cart") || "[]"));
+  const cartProducts = ref([]);
+
+  if (localStorage.getItem("cart")) {
+    const storageCart = JSON.parse(localStorage.getItem("cart"));
+    storageCart.forEach((cartProduct) => {
+      addToCart(cartProduct);
+    });
+  }
 
   function findCartProduct(productID) {
     return cartProducts.value.find((product) => product.id === productID);
@@ -13,18 +20,18 @@ export const useCart = defineStore("cart", () => {
 
     if (existingProduct) return;
 
-    const newProduct = reactive({
+    const reactiveCartProduct = reactive({
       ...product,
-      quantity: 1,
-      totalPrice: product.price,
+      quantity: product.quantity || 1,
+      totalPrice: product.totalPrice || product.price,
     });
 
-    cartProducts.value.push(newProduct);
+    cartProducts.value.push(reactiveCartProduct);
 
     watch(
-      () => [newProduct.price, newProduct.quantity],
+      () => [reactiveCartProduct.price, reactiveCartProduct.quantity],
       ([newPrice, newQuantity]) => {
-        newProduct.totalPrice = newPrice * newQuantity;
+        reactiveCartProduct.totalPrice = newPrice * newQuantity;
       }
     );
   }
