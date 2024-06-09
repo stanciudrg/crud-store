@@ -1,5 +1,6 @@
 <script setup>
 import { useProducts } from "../stores/products";
+import { useCart } from "../stores/cart";
 import { computed, ref, reactive, defineEmits } from "vue";
 import AddToCartBtn from "./AddToCartBtn.vue";
 import EditProductBtn from "./EditProductBtn.vue";
@@ -46,6 +47,11 @@ function handleApplyEdit(product) {
   emit("request-edit", product, editModeProps);
   disableEditMode();
 }
+
+function isInCart(product) {
+  const cart = useCart();
+  return cart.findCartProduct(product.id);
+}
 </script>
 
 <template>
@@ -85,8 +91,9 @@ function handleApplyEdit(product) {
     <AddToCartBtn
       @click="$emit('request-add-to-cart', product)"
       v-if="!editMode"
-      class="add-to-cart"
-      name="Add to cart"
+      :disabled="isInCart(product)"
+      class="'add-to-cart'"
+      :name="isInCart(product) ? 'In cart &nbsp; &#10003;' : 'Add to cart'"
     />
     <div class="product-controls">
       <CancelEditBtn
@@ -231,8 +238,14 @@ textarea::-webkit-scrollbar-thumb:hover {
   padding: 0.5rem 1rem;
 }
 
-.add-to-cart:hover {
+.add-to-cart:enabled:hover {
   background-color: rgb(230, 230, 230);
+}
+
+.add-to-cart:disabled {
+  cursor: default;
+  background-color: rgb(235, 235, 235);
+  color: rgb(120, 120, 120);
 }
 
 .product-controls {
