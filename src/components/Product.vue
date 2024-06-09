@@ -46,10 +46,6 @@ function handleApplyEdit(product) {
   emit("request-edit", product, editModeProps);
   disableEditMode();
 }
-
-function test() {
-  console.log(props.product);
-}
 </script>
 
 <template>
@@ -93,30 +89,37 @@ function test() {
       name="Add to cart"
     />
     <div class="product-controls">
-      <CancelEditBtn v-if="editMode" @click="disableEditMode" />
-      <DeleteProductBtn v-else @click="$emit('request-delete', product)" />
-
+      <CancelEditBtn
+        class="cancel-edit"
+        v-if="editMode"
+        @click="disableEditMode"
+      />
+      <DeleteProductBtn
+        class="delete-product"
+        v-else
+        @click="$emit('request-delete', product)"
+      />
       <EditProductBtn
+        class="apply-edit"
         v-if="editMode"
         @click="handleApplyEdit(product)"
         :disabled="!isNameProvided"
       />
-      <ToggleEditBtn v-else @click="enableEditMode" />
+      <ToggleEditBtn class="start-edit" v-else @click="enableEditMode" />
     </div>
   </li>
 </template>
 
 <style scoped>
 li {
+  position: relative;
   display: flex;
   flex-direction: column;
-  color: rgb(25, 25, 25);
   background-color: rgb(250, 250, 250);
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 5px 10px 0 rgba(29, 29, 31, 0.04);
+  color: rgb(25, 25, 25);
   border: 1px solid rgba(29, 29, 31, 0.2);
-  position: relative;
+  border-radius: 1rem;
+  box-shadow: 0 5px 10px 0 rgba(29, 29, 31, 0.04);
 }
 
 li div {
@@ -128,8 +131,8 @@ li div {
 }
 
 .name {
-  font-weight: 600;
   font-size: 22px;
+  font-weight: 600;
   padding: 1.5rem 1.5rem 0 1.5rem;
   -webkit-line-clamp: 3;
 }
@@ -146,11 +149,11 @@ li div {
 }
 
 .price {
+  max-width: 230px;
   font-weight: 600;
   margin-top: auto;
   margin-bottom: 1.5rem;
   -webkit-line-clamp: 1;
-  max-width: 230px;
 }
 
 .name-input,
@@ -168,8 +171,8 @@ li div {
 }
 
 .name-input {
-  font-weight: 600;
   font-size: 22px;
+  font-weight: 600;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   margin: 1rem 1rem 0 1rem;
@@ -200,9 +203,9 @@ input {
 textarea {
   height: 100%;
   display: block;
+  padding-right: 8px;
   resize: none;
   white-space: break-spaces;
-  padding-right: 8px;
   overflow: auto;
 }
 
@@ -220,14 +223,9 @@ textarea::-webkit-scrollbar-thumb:hover {
   background-color: rgb(45, 45, 45);
 }
 
-.product-controls {
-  display: flex;
-  gap: 2px;
-}
-
 .add-to-cart {
   position: absolute;
-  bottom: 70px;
+  bottom: 88px;
   right: 16px;
   font-size: 14px;
   padding: 0.5rem 1rem;
@@ -237,11 +235,26 @@ textarea::-webkit-scrollbar-thumb:hover {
   background-color: rgb(230, 230, 230);
 }
 
+.product-controls {
+  display: flex;
+  gap: 4px;
+  padding: 0 1rem 1rem 1rem;
+}
+
 .product-controls button {
   width: 100%;
   background-color: rgb(25, 25, 25);
   color: rgb(250, 250, 250);
-  border-radius: 0;
+}
+
+.delete-product,
+.cancel-edit {
+  border-bottom-left-radius: 0.5rem;
+}
+
+.start-edit,
+.apply-edit {
+  border-bottom-right-radius: 0.5rem;
 }
 
 .product-controls button:disabled {

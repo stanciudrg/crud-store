@@ -9,11 +9,11 @@ import Button from "./Button.vue";
 <style scoped>
 button {
   align-self: center;
+  width: 75px;
+  height: 75px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
   font-size: 2rem;
   background-color: rgb(25, 25, 25);
   color: rgb(250, 250, 250);

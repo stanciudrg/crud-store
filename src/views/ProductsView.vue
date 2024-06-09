@@ -54,7 +54,6 @@ function hideForm() {
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 2rem;
   margin-top: 4rem;
   margin-bottom: 4rem;
 }

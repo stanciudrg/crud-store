@@ -34,9 +34,9 @@ export const useProducts = defineStore("products", () => {
 
   function addProduct(name, description, price) {
     const productToAdd = {
-      name,
-      description,
-      price,
+      name: name || "",
+      description: description || "",
+      price: price || 0,
       id: nextID.value++,
     };
 

@@ -36,9 +36,10 @@ function removeFromCart(cartProduct) {
 
 <style scoped>
 ul {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
   list-style-type: none;
+  gap: 1rem;
 }
 </style>

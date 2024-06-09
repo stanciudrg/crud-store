@@ -1,4 +1,4 @@
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
 export const useCart = defineStore("cart", () => {
@@ -11,16 +11,29 @@ export const useCart = defineStore("cart", () => {
   function addToCart(product) {
     const existingProduct = findCartProduct(product.id);
 
-    if (existingProduct) {
-      return (existingProduct.quantity += 1);
-    }
+    if (existingProduct) return;
 
-    cartProducts.value.push({ ...product, quantity: 1 });
+    const newProduct = reactive({
+      ...product,
+      quantity: 1,
+      totalPrice: product.price,
+    });
+
+    cartProducts.value.push(newProduct);
+
+    watch(
+      () => [newProduct.price, newProduct.quantity],
+      ([newPrice, newQuantity]) => {
+        newProduct.totalPrice = newPrice * newQuantity;
+      }
+    );
   }
 
   function updateCartProduct(productToUpdate, newValues) {
     for (const [key, newValue] of Object.entries(newValues)) {
-      if (productToUpdate.hasOwnProperty(key)) productToUpdate[key] = newValue;
+      if (productToUpdate.hasOwnProperty(key)) {
+        productToUpdate[key] = newValue;
+      }
     }
   }
 
@@ -44,13 +57,21 @@ export const useCart = defineStore("cart", () => {
     productToReduceQuantity.quantity -= 1;
 
     if (productToReduceQuantity.quantity === 0) {
-      removeCartProduct(productToReduceQuantity.id);
+      removeCartProduct(productToReduceQuantity);
     }
   }
 
   function removeCartProduct(productToDelete) {
     const index = cartProducts.value.indexOf(productToDelete);
     cartProducts.value.splice(index, 1);
+  }
+
+  function clearCart() {
+    cartProducts.value = [];
+  }
+
+  function getTotalProductPrice(product) {
+    return product.quantity * product.price;
   }
 
   const totalPrice = computed(() => {
@@ -75,6 +96,8 @@ export const useCart = defineStore("cart", () => {
     increaseProductQuantity,
     reduceProductQuantity,
     removeCartProduct,
+    clearCart,
+    getTotalProductPrice,
     totalPrice,
     totalQuantity,
   };

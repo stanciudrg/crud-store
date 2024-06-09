@@ -123,19 +123,19 @@ function addToCart(product) {
 
 <style scoped>
 .sort-by {
+  align-self: center;
+  width: 80px;
   display: flex;
   flex-direction: column;
   position: relative;
   margin-top: 2rem;
-  align-self: center;
-  width: 80px;
 }
 
 .sort-by > button {
+  text-decoration: underline;
   background-color: transparent;
   padding: 0.5rem 0.25rem;
   border-radius: 0.25rem;
-  text-decoration: underline;
 }
 
 .sort-by > button:hover,
@@ -149,21 +149,21 @@ function addToCart(product) {
   top: 40px;
   right: 0;
   left: 0;
-  list-style-type: none;
   display: flex;
   flex-direction: column;
   background-color: rgb(250, 250, 250);
+  border: 1px solid rgba(29, 29, 31, 0.2);
   border-radius: 0.25rem;
   box-shadow: 0 20px 30px 0 rgba(29, 29, 31, 0.1);
-  border: 1px solid rgba(29, 29, 31, 0.2);
+  list-style-type: none;
 }
 
 .sort-by ul button {
-  background-color: transparent;
   width: 100%;
   padding: 0.5rem;
   font-weight: 500;
   font-size: 16px;
+  background-color: transparent;
 }
 
 .sort-by ul button.active {
@@ -177,12 +177,12 @@ function addToCart(product) {
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, 390px);
-  grid-template-rows: repeat(auto-fit, 350px);
-  grid-auto-rows: 350px;
-  gap: 2rem;
+  grid-template-rows: repeat(auto-fit, 360px);
+  grid-auto-rows: 360px;
   justify-content: center;
   list-style-type: none;
   padding: 0;
   margin-top: 1rem;
+  gap: 2rem;
 }
 </style>

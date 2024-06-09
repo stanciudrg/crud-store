@@ -27,8 +27,10 @@ body {
   flex-direction: column;
   height: 100vh;
   max-width: 1300px;
+  min-width: 550px;
   margin: 0 auto;
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(240, 240, 240);
+  padding: 0 1rem;
 }
 
 label {
