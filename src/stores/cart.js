@@ -1,15 +1,32 @@
 import { ref, watch, computed, reactive } from "vue";
 import { defineStore } from "pinia";
+import axios from "axios";
+import { debounce } from "lodash";
 
 export const useCart = defineStore("cart", () => {
   const cartProducts = ref([]);
 
-  if (localStorage.getItem("cart")) {
-    const storageCart = JSON.parse(localStorage.getItem("cart"));
-    storageCart.forEach((cartProduct) => {
-      addToCart(cartProduct);
-    });
+  async function fetchCartProducts() {
+    try {
+      const response = await axios.get("http://localhost:5038/store/cart");
+      response.data.forEach((cartProduct) => {
+        delete cartProduct._id;
+        addToCart(cartProduct);
+      });
+    } catch (error) {
+      console.error("Failed fetching cart products:", error);
+    }
   }
+
+  const saveCart = debounce(async () => {
+    try {
+      await axios.post("http://localhost:5038/store/cart", cartProducts.value);
+    } catch (error) {
+      console.error("Error saving cart products:", error);
+    }
+  }, 500);
+
+  watch(cartProducts, saveCart, { deep: true });
 
   function findCartProduct(productID) {
     return cartProducts.value.find((product) => product.id === productID);
@@ -97,6 +114,7 @@ export const useCart = defineStore("cart", () => {
 
   return {
     cartProducts,
+    fetchCartProducts,
     findCartProduct,
     addToCart,
     updateCartProduct,

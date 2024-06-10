@@ -1,12 +1,59 @@
 import { ref, watch, computed } from "vue";
 import { defineStore } from "pinia";
+import axios from "axios";
 
 export const useProducts = defineStore("products", () => {
-  const products = ref(JSON.parse(localStorage.getItem("products") || "[]"));
+  const products = ref([]);
 
-  const sortMethod = ref(
-    JSON.parse(localStorage.getItem("sortMethod")) || "default"
+  async function fetchProducts() {
+    try {
+      const response = await axios.get("http://localhost:5038/store/products");
+      products.value = response.data;
+      products.value.map(({ _id, ...rest }) => rest);
+      nextID.value =
+        products.value.length > 0
+          ? Math.max(...products.value.map((product) => product.id)) + 1
+          : 0;
+    } catch (error) {
+      console.error("Failed fetching products:", error);
+    }
+  }
+
+  watch(
+    products,
+    async () => {
+      try {
+        await axios.post(
+          "http://localhost:5038/store/products",
+          products.value
+        );
+      } catch (error) {
+        console.error("Error saving products:", error);
+      }
+    },
+    { deep: true }
   );
+
+  const sortMethod = ref("default");
+
+  async function fetchSortMethod() {
+    try {
+      const response = await axios.get("http://localhost:5038/store/settings");
+      sortMethod.value = response.data[0].sortMethod;
+    } catch (error) {
+      console.error("Failed fetching settings:", error);
+    }
+  }
+
+  watch(sortMethod, async () => {
+    try {
+      await axios.post("http://localhost:5038/store/settings", {
+        sortMethod: sortMethod.value,
+      });
+    } catch (error) {
+      console.error("Error saving settings:", error);
+    }
+  });
 
   const sortedProducts = computed(() => {
     if (sortMethod.value === "default") {
@@ -22,11 +69,7 @@ export const useProducts = defineStore("products", () => {
     }
   });
 
-  const nextID = ref(
-    products.value.length > 0
-      ? Math.max(...products.value.map((product) => product.id)) + 1
-      : 0
-  );
+  const nextID = ref(0);
 
   function changeSortMethod(newMethod) {
     sortMethod.value = newMethod;
@@ -69,6 +112,8 @@ export const useProducts = defineStore("products", () => {
   return {
     products,
     sortMethod,
+    fetchProducts,
+    fetchSortMethod,
     sortedProducts,
     nextID,
     changeSortMethod,
