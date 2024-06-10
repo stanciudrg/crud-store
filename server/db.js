@@ -9,7 +9,6 @@ const DATABASE_NAME = process.env.DATABASE_NAME;
 let database = null;
 
 export async function connect() {
-  console.log(CONNECTION_STRING);
   if (database) return database;
 
   try {
