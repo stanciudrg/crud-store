@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
-const DATABASE_NAME = process.env.DATABASE_NAME;
 
 let database = null;
 
@@ -13,7 +12,7 @@ export async function connect() {
 
   try {
     const client = await MongoClient.connect(CONNECTION_STRING);
-    database = client.db(DATABASE_NAME);
+    database = client.db();
     console.log("Successfully connected to database");
     return database;
   } catch (error) {

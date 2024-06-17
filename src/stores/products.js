@@ -39,6 +39,7 @@ export const useProducts = defineStore("products", () => {
   async function fetchSortMethod() {
     try {
       const response = await axios.get("http://localhost:5038/store/settings");
+      if (response.data.length === 0) return;
       sortMethod.value = response.data[0].sortMethod;
     } catch (error) {
       console.error("Failed fetching settings:", error);
