@@ -1,6 +1,6 @@
 # mevn-crud-store
 
-CRUD application example created using Vue.js, Node, Express, and MongoDB.
+CRUD application example created using MongoDB, Express.js, Vue.js and Node.js.
 
 Set up:
 
