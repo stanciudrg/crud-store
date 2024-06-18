@@ -3,6 +3,9 @@ import CartProducts from "../components/CartProducts.vue";
 import CartInfo from "../components/CartInfo.vue";
 import { useCart } from "../stores/cart";
 
+// The "Cart" page of the application. Has its on memory data managed by
+// Pinia's cart.js.
+
 const cart = useCart();
 
 function clearCart() {
@@ -38,6 +41,7 @@ function clearCart() {
   align-self: start;
 }
 
+/* Media queries for responsive design */
 @media (max-width: 1024px) {
   .cart-view {
     flex-direction: column;

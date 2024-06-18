@@ -5,6 +5,9 @@ import AddProductForm from "../components/AddProductForm.vue";
 import Products from "../components/Products.vue";
 import { ref, watch } from "vue";
 
+// The "Products" page of the application, which is also the homepage ("/").
+// Has its on memory data managed by Pinia's products.js.
+
 const productsStore = useProducts();
 
 let isFormVisible = ref(false);
@@ -22,6 +25,7 @@ function addProduct(product) {
 function showForm() {
   isFormVisible.value = true;
 
+  // Close the modal when user presses the Escape key
   window.addEventListener(
     "keyup",
     (e) => {

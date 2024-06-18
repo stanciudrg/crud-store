@@ -1,8 +1,8 @@
+/* General declarations */
 *,
 *::after,
 *::before {
   font-family:
-    "InstrumentSans",
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
@@ -33,6 +33,7 @@ body {
   padding: 0 1rem;
 }
 
+/* Hides labels while allowing them to still be recognized by assistive technologies */
 label {
   position: absolute;
   left: -9999px;

@@ -3,6 +3,7 @@ import { connect } from "../db.js";
 
 const cart = express.Router();
 
+// Fetch the cart collection and transform it into an array of cartProduct objects
 cart.get("/store/cart", async (request, response) => {
   try {
     const database = await connect();
@@ -15,13 +16,16 @@ cart.get("/store/cart", async (request, response) => {
   }
 });
 
+// Replace the entire cart collection with a the new array of cartProduct objects
 cart.post("/store/cart", async (request, response) => {
   try {
     const database = await connect();
     const cartCollection = database.collection("cart");
     const newCart = request.body;
+    // Empty the collection
     await cartCollection.deleteMany({});
 
+    // Do not attempt to insert an array of empty products, the collection is already empty
     if (newCart.length === 0) return;
 
     await cartCollection.insertMany(newCart);

@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 
 const settingsRouter = express.Router();
 
+// Fetch the settings collection and transform it into an array of setting objects
 settingsRouter.get("/store/settings", async (request, response) => {
   try {
     const database = await connect();
@@ -16,6 +17,8 @@ settingsRouter.get("/store/settings", async (request, response) => {
   }
 });
 
+// Specifically updates the only setting type available in the application (sortMethod)
+// with a new value, or creates it if not found
 settingsRouter.post("/store/settings", async (request, response) => {
   try {
     const database = await connect();
