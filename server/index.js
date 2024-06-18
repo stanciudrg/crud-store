@@ -6,14 +6,19 @@ import productsRouter from "./routes/products.js";
 import cartRouter from "./routes/cart.js";
 import settingsRouter from "./routes/settings.js";
 
+// Middlewares
 const app = express();
+// Enables cross-origin resource sharing
 app.use(cors());
+// Parses incoming request with JSON payloads
 app.use(express.json());
 
+// Define API routes
 app.use(productsRouter);
 app.use(cartRouter);
 app.use(settingsRouter);
 
+// Connect to MongoDB on the 5038 port
 app.listen(5038, async () => {
   try {
     await connect();

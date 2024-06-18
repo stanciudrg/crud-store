@@ -3,6 +3,7 @@ import { connect } from "../db.js";
 
 const productsRouter = express.Router();
 
+// Fetch the products collection and transform it into an array of product objects
 productsRouter.get("/store/products", async (request, response) => {
   try {
     const database = await connect();
@@ -15,13 +16,16 @@ productsRouter.get("/store/products", async (request, response) => {
   }
 });
 
+// Replace the entire products collection with a the new array of product objects
 productsRouter.post("/store/products", async (request, response) => {
   try {
     const database = await connect();
     const productsCollection = database.collection("products");
     const newProducts = request.body;
+    // Empty the collection
     await productsCollection.deleteMany({});
 
+    // Do not attempt to insert an array of empty products, the collection is already empty
     if (newProducts.length === 0) return;
 
     await productsCollection.insertMany(newProducts);
