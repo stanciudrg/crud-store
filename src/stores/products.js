@@ -3,13 +3,18 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 export const useProducts = defineStore("products", () => {
+  // Holds all product objects
   const products = ref([]);
 
+  // Fetches all products from MongoDB
   async function fetchProducts() {
     try {
       const response = await axios.get("http://localhost:5038/store/products");
       products.value = response.data;
+      // Deletes the _id set by MongoDB for it to be re-added on post requests
+      // Ensures the ID of products in the database are always refreshed
       products.value.map(({ _id, ...rest }) => rest);
+      // Finds the nextID based on the highest ID in the list of products
       nextID.value =
         products.value.length > 0
           ? Math.max(...products.value.map((product) => product.id)) + 1
@@ -19,6 +24,8 @@ export const useProducts = defineStore("products", () => {
     }
   }
 
+  // Requests for the products in the database to be replaced with the current products data
+  // each time the products data is modified
   watch(
     products,
     async () => {
@@ -34,8 +41,10 @@ export const useProducts = defineStore("products", () => {
     { deep: true }
   );
 
+  // Holds the current products sorting method
   const sortMethod = ref("default");
 
+  // Fetches the sortingMethod from the database
   async function fetchSortMethod() {
     try {
       const response = await axios.get("http://localhost:5038/store/settings");
@@ -46,6 +55,8 @@ export const useProducts = defineStore("products", () => {
     }
   }
 
+  // Requests for the sortingMethod in the database to be replaced with the current sortingMethod
+  // each time the sortingMethod is modified
   watch(sortMethod, async () => {
     try {
       await axios.post("http://localhost:5038/store/settings", {
@@ -56,6 +67,8 @@ export const useProducts = defineStore("products", () => {
     }
   });
 
+  // Computed value returning the sorted version of the products array based
+  // on the current sortingMethod
   const sortedProducts = computed(() => {
     if (sortMethod.value === "default") {
       return products.value;
@@ -70,12 +83,16 @@ export const useProducts = defineStore("products", () => {
     }
   });
 
+  // Holds the nextID that should be applied to the new product that will be added
+  // Helps other components loop through the array of products inside HTML templates
   const nextID = ref(0);
 
+  // Changes the current sortingMethod
   function changeSortMethod(newMethod) {
     sortMethod.value = newMethod;
   }
 
+  // Creates a new product object containing the passed properties and adds it into the products array
   function addProduct(name, description, price) {
     const productToAdd = {
       name: name || "",
@@ -87,6 +104,7 @@ export const useProducts = defineStore("products", () => {
     products.value.push(productToAdd);
   }
 
+  // Updates the product containing the passed productID with the newValues
   function updateProduct(productID, newValues) {
     const productToUpdate = products.value.find(
       (product) => product.id === productID
@@ -99,6 +117,7 @@ export const useProducts = defineStore("products", () => {
     }
   }
 
+  // Deletes the product containing the passed productID
   function deleteProduct(productID) {
     const productToDelete = products.value.find(
       (product) => product.id === productID

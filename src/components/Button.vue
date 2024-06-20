@@ -1,3 +1,4 @@
+<!-- Parent Button element with basic styling  -->
 <script setup>
 defineProps({
   name: String,

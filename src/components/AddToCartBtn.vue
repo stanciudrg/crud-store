@@ -1,3 +1,4 @@
+<!-- "Add to cart" button located on all product elements -->
 <script setup>
 import Button from "./Button.vue";
 </script>

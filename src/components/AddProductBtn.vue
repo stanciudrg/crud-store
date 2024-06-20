@@ -1,3 +1,4 @@
+<!-- Located on the Products view, opens a form modal for adding a new product -->
 <script setup>
 import Button from "./Button.vue";
 </script>

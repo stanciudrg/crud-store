@@ -1,7 +1,10 @@
+<!-- cartProduct element containing cartProduct information (name, description, price), and
+ data manipulation buttons (increase quantity, reduce quantity, remove from cart) -->
 <script setup>
 import Button from "./Button.vue";
 import RemoveFromCartBtn from "./RemoveFromCartBtn.vue";
 
+// Events passed upwards
 defineEmits([
   "request-reduce-quantity",
   "request-increase-quantity",
@@ -51,6 +54,7 @@ const props = defineProps({
 </template>
 
 <style scoped>
+/* cartProduct element */
 .cart-product {
   height: 250px;
   display: flex;
@@ -64,6 +68,7 @@ const props = defineProps({
   box-shadow: 0 5px 10px 0 rgba(29, 29, 31, 0.04);
 }
 
+/* Holds product properties as textContent */
 .cart-product-info {
   display: flex;
   flex-direction: column;
@@ -77,6 +82,7 @@ const props = defineProps({
   word-break: break-word;
 }
 
+/* cartProduct properties stored as textContent */
 .name {
   font-size: 22px;
   font-weight: 600;
@@ -99,12 +105,14 @@ const props = defineProps({
   -webkit-line-clamp: 1;
 }
 
+/* Holds cartProduct controls (increase quantity, reduce quantity, remove from cart) */
 .cart-product-controls {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
+/* Holds cartProduct quantity controls (increase quantity, reduce quantity) and the quantity value */
 .quantity-control {
   display: flex;
   flex-direction: column;
@@ -127,10 +135,12 @@ const props = defineProps({
   background-color: rgb(45, 45, 45);
 }
 
+/* Quantity value */
 .quantity {
   font-weight: 600;
 }
 
+/* Unnamed "Remove from cart" button holding a SVG icon */
 .remove-from-cart-btn {
   align-self: center;
   width: 40px;

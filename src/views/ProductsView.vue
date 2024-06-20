@@ -10,8 +10,10 @@ import { ref, watch } from "vue";
 
 const productsStore = useProducts();
 
+// Represents the current state of the formModal (open vs closed)
 let isFormVisible = ref(false);
 
+// Closes the formModal after submit and adds the product into the products store
 function addProduct(product) {
   hideForm();
 
@@ -22,6 +24,7 @@ function addProduct(product) {
   );
 }
 
+// Opens the formModal
 function showForm() {
   isFormVisible.value = true;
 
@@ -35,6 +38,7 @@ function showForm() {
   );
 }
 
+// Hides the form modal
 function hideForm() {
   isFormVisible.value = false;
 }

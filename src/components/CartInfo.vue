@@ -1,3 +1,4 @@
+<!-- Holds cart information (total quantity and total price) and cart controls (empty cart) -->
 <script setup>
 import { useCart } from "../stores/cart";
 import ClearCartBtn from "./ClearCartBtn.vue";
@@ -41,6 +42,7 @@ const cart = useCart();
   font-weight: 600;
 }
 
+/* Cart information elements */
 .total-quantity,
 .total-price {
   display: flex;
@@ -51,6 +53,7 @@ const cart = useCart();
   overflow: hidden;
 }
 
+/* Span's that hold the values */
 .total-quantity span:last-of-type,
 .total-price span:last-of-type {
   font-weight: 600;
@@ -64,6 +67,7 @@ const cart = useCart();
   margin-top: 0.5rem;
 }
 
+/* "Clear cart" button */
 button {
   background-color: rgb(25, 25, 25);
   color: rgb(250, 250, 250);

@@ -1,7 +1,9 @@
+<!-- Form modal for adding a new product -->
 <script setup>
 import Button from "./Button.vue";
 defineEmits(["clicked-outside", "form-submit"]);
 
+// Models used to bind the input values and send them upwards via the 'form-submit' event
 let name = defineModel("name");
 let description = defineModel("description");
 let price = defineModel("price");
@@ -14,10 +16,12 @@ let price = defineModel("price");
     class="add-product"
   >
     <fieldset>
+      <!-- Name textarea -->
       <div class="form-control name">
         <label>Name</label>
         <textarea v-model.trim="name" placeholder="Product name"></textarea>
       </div>
+      <!-- Description textarea -->
       <div class="form-control description">
         <label>Description</label>
         <textarea
@@ -25,6 +29,7 @@ let price = defineModel("price");
           placeholder="Product description"
         ></textarea>
       </div>
+      <!-- Price number input -->
       <div class="form-control price form-control-check">
         <label>Price ($)</label>
         <input
@@ -36,6 +41,7 @@ let price = defineModel("price");
           placeholder="Product price ($)"
         />
       </div>
+      <!-- Submit button -->
       <Button
         name="Add product"
         @click.prevent="$emit('form-submit', { name, description, price })"
@@ -46,6 +52,7 @@ let price = defineModel("price");
 </template>
 
 <style scoped>
+/* Turns the form into a modal */
 form {
   z-index: 2;
   width: 100%;
@@ -71,6 +78,7 @@ fieldset {
   overflow: hidden;
 }
 
+/* Form inputs styling */
 .name,
 .description,
 .price {
@@ -110,6 +118,7 @@ input {
   outline: none;
 }
 
+/* Scrollable, non-resizable textarea */
 textarea {
   height: 100%;
   display: block;
@@ -119,6 +128,7 @@ textarea {
   padding-right: 8px;
 }
 
+/* Styling for textarea scrollbars */
 textarea::-webkit-scrollbar {
   width: 7px;
   background: rgb(230, 230, 230);
@@ -133,6 +143,7 @@ textarea::-webkit-scrollbar-thumb:hover {
   background-color: rgb(45, 45, 45);
 }
 
+/* Form submit button */
 button {
   background-color: rgb(25, 25, 25);
   color: rgb(250, 250, 250);

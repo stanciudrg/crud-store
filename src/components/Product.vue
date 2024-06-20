@@ -1,3 +1,5 @@
+<!-- Product element containing product information (name, description, price), and
+ data manipulation buttons (Delete and Edit) -->
 <script setup>
 import { useProducts } from "../stores/products";
 import { useCart } from "../stores/cart";
@@ -8,6 +10,7 @@ import DeleteProductBtn from "./DeleteProductBtn.vue";
 import ToggleEditBtn from "./ToggleEditBtn.vue";
 import CancelEditBtn from "./CancelEditBtn.vue";
 
+// Events passed upwards
 const emit = defineEmits([
   "request-add-to-cart",
   "request-delete",
@@ -18,22 +21,33 @@ const props = defineProps({
   product: Object,
 });
 
+// Manipulates the ability to submit the form based on whether the name input has any value
 const isNameProvided = ref(true);
 
+// Holds the properties of products in editMode.
+// Object properties are bound with editMode inputs
 const editModeProps = {};
 
+// Controls the editing state of the product
+// Changes div containers that hold properties as textContent with
+// textareas and inputs that retrieve new properties
 let editMode = ref(false);
 
+// Checks whether at least one letter is provided as product name
 function checkNameInput(e) {
   isNameProvided.value = e.target.value.length > 0;
 }
 
+// Updates the editModeProps with editMode's input values
 function updateEditModeProps() {
   editModeProps.name = props.product.name;
   editModeProps.description = props.product.description;
   editModeProps.price = props.product.price;
 }
 
+// Enables editMode and updates the editModeProps with current product properties
+// In turn, editMode input values get updated with current product properties, since
+// the editModeProps are bound with the input values via v-models
 function enableEditMode() {
   updateEditModeProps();
   editMode.value = true;
@@ -43,11 +57,16 @@ function disableEditMode() {
   editMode.value = false;
 }
 
+// Passes the edit request as an emit upwards and provides the product object being edited
+// and the new properties
 function handleApplyEdit(product) {
   emit("request-edit", product, editModeProps);
   disableEditMode();
 }
 
+// Checks if product is already in cart
+// Used to turn the "Add to cart" button into a disabled button
+// to prevent the product being added multiple times
 function isInCart(product) {
   const cart = useCart();
   return cart.findCartProduct(product.id);
@@ -96,6 +115,7 @@ function isInCart(product) {
       :name="isInCart(product) ? 'In cart &nbsp; &#10003;' : 'Add to cart'"
     />
     <div class="product-controls">
+
       <CancelEditBtn
         class="cancel-edit"
         v-if="editMode"
@@ -118,6 +138,7 @@ function isInCart(product) {
 </template>
 
 <style scoped>
+/* Product element */
 li {
   position: relative;
   display: flex;
@@ -129,6 +150,10 @@ li {
   box-shadow: 0 5px 10px 0 rgba(29, 29, 31, 0.04);
 }
 
+/* Holds product properties as textContent, or textareas and inputs when in editMode */
+/* Elements have a specific number of lines to prevent them from overflowing, and extra textContent
+is hidden until editMode is engaged, where extra content can be found by scrolling into the textarea 
+holding the textContent */
 li div {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -137,6 +162,7 @@ li div {
   word-break: break-word;
 }
 
+/* Elements that hold the product properties as textContent when not in editMode */
 .name {
   font-size: 22px;
   font-weight: 600;
@@ -163,6 +189,7 @@ li div {
   -webkit-line-clamp: 1;
 }
 
+/* Elements that hold the textareas and inputs when in editMode */
 .name-input,
 .description-input,
 .price-input {
@@ -207,6 +234,7 @@ input {
   outline: none;
 }
 
+/* Scrollable, non-resizable textarea */
 textarea {
   height: 100%;
   display: block;
@@ -216,6 +244,7 @@ textarea {
   overflow: auto;
 }
 
+/* Styling for textarea scrollbars */
 textarea::-webkit-scrollbar {
   width: 7px;
   background: rgb(230, 230, 230);
@@ -230,6 +259,7 @@ textarea::-webkit-scrollbar-thumb:hover {
   background-color: rgb(45, 45, 45);
 }
 
+/* Button used to add the product to the cart. Can only be triggered once */
 .add-to-cart {
   position: absolute;
   bottom: 88px;
@@ -248,6 +278,7 @@ textarea::-webkit-scrollbar-thumb:hover {
   color: rgb(120, 120, 120);
 }
 
+/* Holds the buttons that manipulate the product (Delete, Edit, Cancel Edit, and Apply Edit) */
 .product-controls {
   display: flex;
   gap: 4px;

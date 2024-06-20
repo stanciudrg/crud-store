@@ -1,3 +1,5 @@
+<!-- Holds all the product elements and a sorting utility -->
+<!-- Is responsible for handling all the events passed by each Product component -->
 <script setup>
 import Product from "./Product.vue";
 import Button from "./Button.vue";
@@ -9,13 +11,19 @@ defineProps({
   products: Object,
 });
 
+const cart = useCart();
+
+// Represents the current state of the sortMethods context menu (open vs closed)
 const showSortMethods = ref(false);
 
+// Products store that manages the state of product objects
 const productsStore = useProducts();
 
+// Toggles the sorting context menu
 function toggleSortMethodsList() {
   showSortMethods.value = !showSortMethods.value;
 
+  // Close the context menu as soon as user clicks outside it
   if (showSortMethods.value) {
     document.addEventListener(
       "click",
@@ -27,20 +35,23 @@ function toggleSortMethodsList() {
   }
 }
 
+// If user clicked on one of the sorting methods, changes the sortingMethod in the products store,
+// then closes the context menu
 function handleSortMethodsEvents(e) {
   if (!e.target.classList.contains("sort-by-button")) return;
   productsStore.changeSortMethod(e.target.classList[1]);
   toggleSortMethodsList();
 }
 
+// Deletes the product from products store and from the cart store if found
 function deleteProduct(product) {
   productsStore.deleteProduct(product.id);
 
-  const cart = useCart();
   const cartProduct = cart.findCartProduct(product.id);
   if (cartProduct) cart.removeCartProduct(cartProduct);
 }
 
+// Updates the product with the new properties both in products and cart stores
 function editProduct(product, newProps) {
   productsStore.updateProduct(product.id, {
     name: newProps.name,
@@ -48,7 +59,6 @@ function editProduct(product, newProps) {
     price: newProps.price,
   });
 
-  const cart = useCart();
   const cartProduct = cart.findCartProduct(product.id);
 
   if (cartProduct)
@@ -59,8 +69,8 @@ function editProduct(product, newProps) {
     });
 }
 
+// Adds the product into the cart store
 function addToCart(product) {
-  const cart = useCart();
   cart.addToCart(product);
 }
 </script>
@@ -122,6 +132,7 @@ function addToCart(product) {
 </template>
 
 <style scoped>
+/* Sort button */
 .sort-by {
   align-self: center;
   width: 80px;
@@ -143,6 +154,7 @@ function addToCart(product) {
   background-color: rgb(250, 250, 250);
 }
 
+/* Context menu containing all sortingMethods */
 .sort-by ul {
   z-index: 1;
   position: absolute;
@@ -174,6 +186,7 @@ function addToCart(product) {
   background-color: rgb(235, 235, 235);
 }
 
+/* Products grid */
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, 390px);

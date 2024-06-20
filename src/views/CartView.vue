@@ -8,6 +8,7 @@ import { useCart } from "../stores/cart";
 
 const cart = useCart();
 
+// Clears the cart
 function clearCart() {
   cart.clearCart();
 }
@@ -22,6 +23,8 @@ function clearCart() {
 </template>
 
 <style scoped>
+/* Two separate versions of the cart view (default and empty) */
+/* cart-view-empty holds "Cart is empty" textContent only */
 .cart-view,
 .cart-view-empty {
   max-width: 1300px;

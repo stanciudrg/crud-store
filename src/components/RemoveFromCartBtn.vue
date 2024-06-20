@@ -1,3 +1,5 @@
+<!-- Button used to remove the cartProduct from the cart,
+ located inside the cartProduct element -->
 <script setup>
 import Button from "./Button.vue";
 </script>

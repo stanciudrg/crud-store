@@ -1,9 +1,12 @@
+<!-- Header element containing the logo and the navbar -->
 <script setup>
 import { RouterLink, useRoute } from "vue-router";
 import { useCart } from "../stores/cart";
 
+// Cart store responsible for managing the state of cart products
 const cart = useCart();
 
+// Current view location
 const location = useRoute();
 </script>
 
